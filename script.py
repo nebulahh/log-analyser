@@ -1,6 +1,5 @@
-# TODO
-# setup threshold for each user
-# send error logs to a file
+# TODO send error logs to a file
+# TODO add AWS lambda function to send alert
 
 import re
 
@@ -18,6 +17,17 @@ patterns = {
 
 results = {event: [] for event in patterns}
 unmatched_log_lines = []
+
+def add_threshold(failed_login_entries):
+    failed_login_username = []
+    for x in failed_login_entries:
+        failed_login_username.append(x['user'])
+        username_count = failed_login_username.count(x['user'])
+        x['occurrence'] = username_count
+        if x['occurrence'] > 4:
+            print(f'User: {x['user']} account lockout. send alert')
+    
+    return failed_login_entries
 
 with open(r"auth.log", "r") as file:
     for line in file:
@@ -40,8 +50,9 @@ for event, entries in results.items():
 print("\nEntries from each event:")
 for event, entries in results.items():
     if event == 'failed_login':
+        result = add_threshold(entries)
         print(f"\n--- {event} ---")
-        print(entries)
+        print(result)
     else:
         print(f"\n--- {event} ---")
         print(entries)
