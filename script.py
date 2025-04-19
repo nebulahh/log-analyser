@@ -1,7 +1,10 @@
 # TODO send error logs to a file
-# TODO add AWS lambda function to send alert
 
 import re
+import boto3
+import json
+
+lambda_client = boto3.client('lambda')
 
 patterns = {
     "failed_login": re.compile(
@@ -25,8 +28,18 @@ def add_threshold(failed_login_entries):
         username_count = failed_login_username.count(x['user'])
         x['occurrence'] = username_count
         if x['occurrence'] > 4:
-            print(f'User: {x['user']} account lockout. send alert')
-    
+            payload = {
+                'alert_type': 'failed_login',
+                'user': x['user'],
+                'ip': x['ip'],
+                'timestamp': x['timestamp'],
+                'occurrence': x['occurrence']
+            }
+            response = lambda_client.invoke(
+                FunctionName='LogAnalyzerAlertFunction',
+                InvocationType='Event',
+                Payload=json.dumps(payload)
+            )
     return failed_login_entries
 
 with open(r"auth.log", "r") as file:
