@@ -1,10 +1,12 @@
-# TODO send error logs to a file
-
 import re
 import boto3
 import json
+import os
 
 lambda_client = boto3.client('lambda')
+function_name = os.environ.get('FunctionName')
+if not function_name:
+    raise ValueError("Environment variable 'FunctionName' is not set.")
 
 patterns = {
     "failed_login": re.compile(
@@ -20,14 +22,14 @@ patterns = {
 
 results = {event: [] for event in patterns}
 unmatched_log_lines = []
+failed_login_username = []
 
 def add_threshold(failed_login_entries):
-    failed_login_username = []
     for x in failed_login_entries:
         failed_login_username.append(x['user'])
         username_count = failed_login_username.count(x['user'])
         x['occurrence'] = username_count
-        if x['occurrence'] > 4:
+        if x['occurrence'] > 3:
             payload = {
                 'alert_type': 'failed_login',
                 'user': x['user'],
@@ -35,12 +37,12 @@ def add_threshold(failed_login_entries):
                 'timestamp': x['timestamp'],
                 'occurrence': x['occurrence']
             }
-            response = lambda_client.invoke(
-                FunctionName='LogAnalyzerAlertFunction',
+            lambda_client.invoke(
+                FunctionName=function_name,
                 InvocationType='Event',
                 Payload=json.dumps(payload)
             )
-    return failed_login_entries
+    return payload
 
 with open(r"auth.log", "r") as file:
     for line in file:

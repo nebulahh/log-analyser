@@ -5,4 +5,3 @@ Apr 8 11:25:02 mymachine sshd[12345]: Failed password for invalid user user123 f
 Apr 8 11:35:02 mymachine sshd[12345]: Failed password for invalid user user123 from 192.168.1.10 port 22 ssh2
 Apr 8 11:45:02 mymachine sshd[12345]: Failed password for invalid user user123 from 192.168.1.10 port 22 ssh2
 Apr 8 11:55:02 mymachine sshd[12345]: Failed password for invalid user user123 from 192.168.1.10 port 22 ssh2
-
