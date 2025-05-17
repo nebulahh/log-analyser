@@ -54,4 +54,4 @@ export FunctionName=YourLambdaFunctionName
 
 ---
 
-I purposely hid the lambda function name
+Hiding the function is an added security
