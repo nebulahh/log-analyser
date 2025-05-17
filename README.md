@@ -36,11 +36,9 @@ The script will parse the log file, detect patterns, and send alerts to the conf
    ```bash
    pip install boto3
    ```
-3. **Configure AWS Credentials**
+3. **Configure AWS Credentials:**
    Ensure your AWS credentials are configured. You can do this by:
-   - Setting environment variables: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`
-   - Using the AWS CLI: `aws configure`
-   - Assigning an IAM role to your instance if running on EC2
+   - Setting environment variables: `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` via the the AWS CLI
 4. **Set Up AWS Lambda Function**
    Create an AWS Lambda function that will process the alert payloads. Note the function's ARN, as you will need it for configuration.
 
