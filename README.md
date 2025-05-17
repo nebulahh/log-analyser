@@ -1,6 +1,6 @@
 # Log Analyser
 
-A Python-based log analysis tool for detecting security-related events in authentication logs. The script parses log files, identifies failed and successful login attempts, privilege escalations, and sends alerts to an AWS Lambda function when suspicious activity (such as repeated failed logins) is detected.
+The script will parse the log file, detect patterns, and send alerts to the configured AWS Lambda function if suspicious activity is found.
 
 ---
 
@@ -56,4 +56,4 @@ export FunctionName=YourLambdaFunctionName
 
 ---
 
-The script will parse the log file, detect patterns, and send alerts to the configured AWS Lambda function if suspicious activity is found.
+I purposely hid the lambda function name
